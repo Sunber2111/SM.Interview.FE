@@ -7,5 +7,8 @@ export const NumberListContainerWrapper = styled.div`
     .wrap-btns{
         display: flex;
         flex-direction: column;
+        button{
+            margin-top: 1rem;
+        }
     }
 `

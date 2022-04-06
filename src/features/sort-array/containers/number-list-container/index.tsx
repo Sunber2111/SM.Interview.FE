@@ -1,11 +1,17 @@
+// React
 import React, { useCallback, useEffect, useState } from 'react';
-import { NumberListContainerWrapper } from './styles';
+
+// 3th party
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { Button, TextField } from '@mui/material';
-import NumberRow from 'features/sort-array/components/number-row';
-import sortArrayService from 'features/sort-array/services/sort-array.service';
+
+// app
+import { NumberListContainerWrapper } from './styles';
 import { showError } from 'app/notification';
+import sortArrayService from 'features/sort-array/services/sort-array.service';
+import { MIN_VALUE_NUMBER } from 'features/sort-array/constants';
+import NumberRow from 'features/sort-array/components/number-row';
 
 const NumberListContainer = () => {
   const [listOfNumber, setListOfNumber] = useState<number[]>([]);
@@ -13,14 +19,18 @@ const NumberListContainer = () => {
   const [numberInput, setNumberInput] = useState<number>(0);
 
   useEffect(() => {
-    setListOfNumber(randomNumber(50));
+    setListOfNumber(randomNumber(MIN_VALUE_NUMBER));
   }, []);
 
   const handleRandom = useCallback(() => {
-    setListOfNumber(randomNumber(50));
+    setListOfNumber(randomNumber(MIN_VALUE_NUMBER));
   }, []);
 
   const handleSort = async () => {
+    if (listOfNumber.length < MIN_VALUE_NUMBER) {
+      showError(`Min items must be more than or queal ${MIN_VALUE_NUMBER}`);
+      return;
+    }
     try {
       const res = await sortArrayService.sortAnArray({
         ListOfNumbers: listOfNumber,
@@ -32,7 +42,13 @@ const NumberListContainer = () => {
   };
 
   const handleAddToList = () => {
-    setListOfNumber([...listOfNumber, numberInput]);
+    const cloneArray = [...listOfNumber];
+    cloneArray.unshift(numberInput);
+    setListOfNumber(cloneArray);
+  };
+
+  const handleClear = () => {
+    setListOfNumber([]);
   };
 
   return (
@@ -51,11 +67,22 @@ const NumberListContainer = () => {
             label="Outlined"
             variant="outlined"
             value={numberInput}
-            onChange={(e) => setNumberInput(parseInt(e.target.value))}
+            onChange={(e) => {
+              setNumberInput(parseInt(e.target.value));
+            }}
           />
-          <Button onClick={handleAddToList}>Add into list</Button>
-          <Button onClick={handleSort}>Sort</Button>
-          <Button onClick={handleRandom}>Random 50 number</Button>
+          <Button variant="outlined" onClick={handleAddToList}>
+            Add into list
+          </Button>
+          <Button variant="outlined" onClick={handleSort}>
+            Sort
+          </Button>
+          <Button variant="outlined" onClick={handleClear}>
+            Clear
+          </Button>
+          <Button variant="outlined" onClick={handleRandom}>
+            Random {MIN_VALUE_NUMBER} number
+          </Button>
         </Grid>
         <Grid item xs={5}>
           <Paper className="wrap-numbers-col">
