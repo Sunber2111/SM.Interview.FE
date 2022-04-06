@@ -36,8 +36,8 @@ const NumberListContainer = () => {
         ListOfNumbers: listOfNumber,
       });
       setListOfNumberSorted(res.data);
-    } catch (error: any) {
-      showError(error.message);
+    } catch (err: any) {
+      showError(err.error);
     }
   };
 
