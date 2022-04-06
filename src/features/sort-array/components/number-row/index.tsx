@@ -1,7 +1,7 @@
-// react
+// React
 import React from 'react';
 
-// app
+// App
 import { NumberRowWrapper } from './styles';
 
 interface Props {

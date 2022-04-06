@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { Button, TextField } from '@mui/material';
 
-// app
+// App
 import { NumberListContainerWrapper } from './styles';
 import { showError } from 'app/notification';
 import sortArrayService from 'features/sort-array/services/sort-array.service';
